@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/.env.example">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/.env.example" />
+              <option name="originalContent" value="# PostgreSQL&#10;POSTGRES_DB=timetracker&#10;POSTGRES_USER=postgres&#10;POSTGRES_PASSWORD=change-me&#10;&#10;# App&#10;SERVER_PORT=8080&#10;JWT_SECRET=please-change-and-use-32+chars-minimum________________________________&#10;JWT_EXPIRATION_SECONDS=2592000" />
+              <option name="updatedContent" value="# PostgreSQL&#10;POSTGRES_DB=timetracker&#10;POSTGRES_USER=postgres&#10;POSTGRES_PASSWORD=change-me&#10;&#10;# App&#10;SERVER_PORT=8080&#10;JWT_SECRET=please-change-and-use-32+chars-minimum________________________________&#10;JWT_EXPIRATION_SECONDS=2592000" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

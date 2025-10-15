@@ -108,6 +108,51 @@ curl -s http://localhost:8080/api/time-entries \
   -H "Authorization: Bearer $TOKEN"
 ```
 
+## CSV-Import (bestehende Daten)
+
+Es gibt einen sicheren Endpoint, um CSVs aus einem festen Ordner zu importieren.
+
+- Import-Ordner im Container: `IMPORT_DIR` (Default: `/app/imports`)
+- In docker-compose ist `./imports` read-only nach `/app/imports` gemountet.
+- Lege deine Datei z. B. als `./imports/existing_data.csv` ab.
+
+Endpoint:
+- `POST /api/imports/time-entries?filename=existing_data.csv&username=<optional>&dryRun=<true|false>`
+- Authentifizierung: Bearer JWT (wie bei den anderen Endpunkten)
+- Parameter:
+  - `filename` (Pflicht): Dateiname innerhalb des Import-Ordners (keine Pfade!)
+  - `username` (optional): Fallback-User, wenn die CSV keine `username`-Spalte enthält
+  - `dryRun` (optional, Default false): Testlauf ohne Inserts
+
+Spalten-Mapping (tolerant bzgl. Namen):
+- username: `username`, `user`, `email`
+- subject: `subject`, `title`, `betreff`, `task`
+- description: `description`, `desc`, `beschreibung`, `notes`, `note`
+- dateWorked: `dateWorked`, `date`, `workDate`, `datum`, `day` (Formate: `yyyy-MM-dd`, `dd.MM.yyyy`, `MM/dd/yyyy`)
+- minutesWorked: `minutesWorked`, `minutes`, `duration`, `dauer`, `mins`, `zeitMin`
+- createdAt: `createdAt`, `created`, `erstelltAm` (ISO-Instant/-Offset/-LocalDateTime; sonst Tagesbeginn von `dateWorked`)
+- lastUpdated/updatedAt: `updatedAt`, `lastUpdated`, `modified`, `geaendertAm` (falls fehlt: wird = `createdAt` gesetzt)
+
+Deduplizierung: Einträge mit gleicher Kombination (user, subject, dateWorked, minutesWorked) werden übersprungen.
+
+Beispiele (lokal, via cURL; ersetze Token):
+```bash
+# Dry-Run ohne Inserts
+curl -X POST "http://localhost:8080/api/imports/time-entries?filename=existing_data.csv&dryRun=true" \
+  -H "Authorization: Bearer <JWT>"
+
+# Echter Import, Fallback-User angeben
+curl -X POST "http://localhost:8080/api/imports/time-entries?filename=existing_data.csv&username=alice" \
+  -H "Authorization: Bearer <JWT>"
+```
+
+Compose-Hinweis:
+- `./imports` existiert lokal (ansonsten anlegen) und enthält deine CSVs.
+- In Prod per `docker-compose.prod.yml` analog gemountet.
+
+CommandLine-Import (optional beim Start):
+- `IMPORT_CSV` auf die Datei setzen, optional `IMPORT_USERNAME` und `IMPORT_DRY_RUN=true`.
+
 ## Deployment auf Linux vServer (Docker)
 
 Voraussetzungen auf dem Server:
