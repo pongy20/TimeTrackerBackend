@@ -8,7 +8,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-timetracker}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    # Für lokale Entwicklung DB-Port freigeben; im Prod ggf. entfernen
+    command: ["postgres", "-c", "listen_addresses=*"]
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
