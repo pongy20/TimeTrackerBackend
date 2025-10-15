@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:timetracker}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: always
+jwt:
+  secret: ${JWT_SECRET:123456789}
+  expirationSeconds: ${JWT_EXPIRATION_SECONDS:2592000}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
+logging:
+  level:
+    org.hibernate.SQL: warn
+    org.springframework.security: info

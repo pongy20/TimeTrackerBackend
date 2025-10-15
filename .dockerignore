@@ -1,0 +1,21 @@
+# VCS & IDE
+.git
+.gitignore
+.idea
+*.iml
+
+# Build Output
+/target
+
+# Docker
+Dockerfile
+**/docker-compose*.yml
+
+# OS/Editor
+.DS_Store
+*.swp
+*.tmp
+
+# Sonstiges
+.mvn
+README.md
